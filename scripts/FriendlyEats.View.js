@@ -72,7 +72,6 @@ FriendlyEats.prototype.viewList = function(filters, filter_description) {
       var el = that.renderTemplate('restaurant-card', data);
       el.querySelector('.rating').append(that.renderRating(data.avgRating));
       el.querySelector('.price').append(that.renderPrice(data.price));
-      //el.querySelector('.valueIndex').append(that.renderValueIndex(data.valueIndex));
       // Setting the id allows to locating the individual restaurant card
       el.querySelector('.location-card').id = 'doc-' + doc.id;
 
@@ -509,12 +508,6 @@ FriendlyEats.prototype.renderPrice = function(price) {
   for (var r = 0; r < price; r += 1) {
     el.append('$');
   }
-  return el;
-};
-
-FriendlyEats.prototype.renderValueIndex = function(valueIndex) {
-  var el = this.renderTemplate('valueIndex', {});
-  el.append(valueIndex.toString());
   return el;
 };
 
