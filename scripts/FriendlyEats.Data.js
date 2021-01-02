@@ -31,7 +31,10 @@ FriendlyEats.prototype.getAllRestaurants = function(renderer) {
 
 FriendlyEats.prototype.getDocumentsInQuery = function(query, renderer) {
   query.onSnapshot(function(snapshot) {
-    if (!snapshot.size) return renderer.empty(); // Display "There are no restaurants".
+    if (!snapshot.size) {
+      // Display "There are no restaurants".
+      return renderer.empty();
+    }
 
     snapshot.docChanges().forEach(function(change) {
       if (change.type === 'removed') {
