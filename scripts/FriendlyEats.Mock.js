@@ -33,6 +33,7 @@ FriendlyEats.prototype.addMockRestaurants = function() {
     var photo = 'https://storage.googleapis.com/firestorequickstarts.appspot.com/food_' + photoID + '.png';
     var numRatings = 0;
     var avgRating = 0;
+    var valueIndex = 0;
 
     var promise = this.addRestaurant({
       name: name,
@@ -41,6 +42,7 @@ FriendlyEats.prototype.addMockRestaurants = function() {
       city: city,
       numRatings: numRatings,
       avgRating: avgRating,
+      valueIndex: valueIndex,
       photo: photo
     });
 
@@ -71,3 +73,4 @@ FriendlyEats.prototype.addMockRatings = function(restaurantID) {
   }
   return Promise.all(ratingPromises);
 };
+

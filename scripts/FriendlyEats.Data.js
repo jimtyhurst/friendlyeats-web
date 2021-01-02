@@ -69,6 +69,8 @@ FriendlyEats.prototype.getFilteredRestaurants = function(filters, renderer) {
     query = query.orderBy('avgRating', 'desc');
   } else if (filters.sort === 'Reviews') {
     query = query.orderBy('numRatings', 'desc');
+  } else if (filters.sort === 'Value') {
+    query = query.orderBy('valueIndex', 'desc');
   }
 
   this.getDocumentsInQuery(query, renderer);
@@ -78,6 +80,10 @@ FriendlyEats.prototype.addRating = function(restaurantID, rating) {
   var collection = firebase.firestore().collection('restaurants');
   var document = collection.doc(restaurantID);
   var newRatingDocument = document.collection('ratings').doc();
+  var MAX_RATING = 5.0;
+  var RATING_WEIGHT = 100.00 / Math.pow(MAX_RATING, 2);
+  var MAX_PRICE = 4.0;
+  var PRICE_WEIGHT = 100.00 / MAX_PRICE;
 
   return firebase.firestore().runTransaction(function(transaction) {
     return transaction.get(document).then(function(doc) {
@@ -87,9 +93,12 @@ FriendlyEats.prototype.addRating = function(restaurantID, rating) {
         (data.numRatings * data.avgRating + rating.rating) /
         (data.numRatings + 1);
 
+      var valueIndex = (Math.pow(newAverage, 2) * RATING_WEIGHT) - (data.price * PRICE_WEIGHT);
+
       transaction.update(document, {
         numRatings: data.numRatings + 1,
-        avgRating: newAverage
+        avgRating: newAverage,
+        valueIndex: valueIndex
       });
       return transaction.set(newRatingDocument, rating);
     });

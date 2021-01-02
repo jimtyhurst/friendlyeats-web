@@ -68,13 +68,14 @@ FriendlyEats.prototype.viewList = function(filters, filter_description) {
       data['go_to_restaurant'] = function() {
         that.router.navigate('/restaurants/' + doc.id);
       };
-  
+
       var el = that.renderTemplate('restaurant-card', data);
       el.querySelector('.rating').append(that.renderRating(data.avgRating));
       el.querySelector('.price').append(that.renderPrice(data.price));
+      //el.querySelector('.valueIndex').append(that.renderValueIndex(data.valueIndex));
       // Setting the id allows to locating the individual restaurant card
       el.querySelector('.location-card').id = 'doc-' + doc.id;
-  
+
       var existingLocationCard = mainEl.querySelector('#doc-' + doc.id);
       if (existingLocationCard) {
         // modify
@@ -303,6 +304,8 @@ FriendlyEats.prototype.updateQuery = function(filters) {
     query_description += ' sorted by rating';
   } else if (filters.sort === 'Reviews') {
     query_description += ' sorted by # of reviews';
+  } else if (filters.sort === 'Value') {
+    query_description += ' sorted by the value index';
   }
 
   this.viewList(filters, query_description);
@@ -506,6 +509,12 @@ FriendlyEats.prototype.renderPrice = function(price) {
   for (var r = 0; r < price; r += 1) {
     el.append('$');
   }
+  return el;
+};
+
+FriendlyEats.prototype.renderValueIndex = function(valueIndex) {
+  var el = this.renderTemplate('valueIndex', {});
+  el.append(valueIndex.toString());
   return el;
 };
 
