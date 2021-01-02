@@ -81,7 +81,7 @@ FriendlyEats.prototype.addRating = function(restaurantID, rating) {
   var document = collection.doc(restaurantID);
   var newRatingDocument = document.collection('ratings').doc();
   var MAX_RATING = 5.0;
-  var RATING_WEIGHT = 100.00 / Math.pow(MAX_RATING, 2);
+  var RATING_WEIGHT = 100.00 / Math.pow(MAX_RATING, 3);
   var MAX_PRICE = 4.0;
   var PRICE_WEIGHT = 100.00 / MAX_PRICE;
 
@@ -93,7 +93,7 @@ FriendlyEats.prototype.addRating = function(restaurantID, rating) {
         (data.numRatings * data.avgRating + rating.rating) /
         (data.numRatings + 1);
 
-      var valueIndex = (Math.pow(newAverage, 2) * RATING_WEIGHT) - (data.price * PRICE_WEIGHT);
+      var valueIndex = Math.round((Math.pow(newAverage, 3) * RATING_WEIGHT) - (data.price * PRICE_WEIGHT));
 
       transaction.update(document, {
         numRatings: data.numRatings + 1,
